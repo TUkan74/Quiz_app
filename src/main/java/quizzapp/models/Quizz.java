@@ -1,5 +1,7 @@
 package quizzapp.models;
 
+import quizzapp.database.Database;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -17,11 +19,10 @@ public class Quizz {
     /**
      * Constructs a new Quizz instance.
      *
-     * @param id the unique identifier of the quiz
      * @param _title the title of the quiz
      * @param _description a brief description of the quiz
      */
-    public Quizz(int id, String _title, String _description) {
+    public Quizz(String _title, String _description) {
         this._id = UUID.randomUUID().toString();
         this._title = _title;
         this._description = _description;
@@ -33,7 +34,7 @@ public class Quizz {
      *
      * @return the quiz ID
      */
-    public String  get_id() {
+    public String get_id() {
         return _id;
     }
 
@@ -74,22 +75,29 @@ public class Quizz {
     }
 
     /**
-     * Adds a question to the quiz.
+     * Adds a question to the quiz and updates the database.
      *
      * @param question the question to add
+     * @param database the Database instance
      */
-    public void addQuestion(String question) {
-        this._questions.add(question);
+    public void addQuestion(String question, Database database) {
+        this._questions.add(question); // Add question locally
+        database.updateQuiz(this);    // Persist the updated quiz to the database
     }
 
     /**
-     * Removes a question from the quiz.
+     * Removes a question from the quiz and updates the database.
      *
      * @param question the question to remove
+     * @param database the Database instance
      * @return true if the question was removed, false otherwise
      */
-    public boolean removeQuestion(String question) {
-        return this._questions.remove(question);
+    public boolean removeQuestion(String question, Database database) {
+        boolean removed = this._questions.remove(question);
+        if (removed) {
+            database.updateQuiz(this); // Persist the updated quiz to the database
+        }
+        return removed;
     }
 
     /**

@@ -67,6 +67,17 @@ public class Database {
         }
     }
 
+    public void updateQuiz(Quizz updatedQuiz) {
+        List<Quizz> quizzes = loadQuizzes(); // Load all quizzes
+        for (int i = 0; i < quizzes.size(); i++) {
+            if (quizzes.get(i).get_id().equals(updatedQuiz.get_id())) {
+                quizzes.set(i, updatedQuiz); // Replace the old quiz with the updated one
+                break;
+            }
+        }
+        saveQuizzes(quizzes); // Save the updated list back to the JSON file
+    }
+
     // User Operations
 
     public List<User> loadUsers() {
