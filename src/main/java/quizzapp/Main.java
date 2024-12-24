@@ -1,4 +1,4 @@
-package quizzap.main.java;
+package quizzapp;
 
 public class Main {
     public static void main(String[] args) {
