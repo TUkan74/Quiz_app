@@ -1,6 +1,7 @@
-package quizzapp.util;
+package quizzapp.models;
 
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -16,7 +17,7 @@ public class QuestionTest {
 
         Question question = new Question(text, options, correctAnswerIndex);
 
-        assertNotNull(question.getId());
+        assertNotNull(question.get_id());
         assertEquals(text, question.get_text());
         assertArrayEquals(options, question.get_options());
         assertEquals(correctAnswerIndex, question.get_correctAnswerIndex());
@@ -79,7 +80,7 @@ public class QuestionTest {
         Question question1 = new Question(text, options, correctAnswerIndex);
         Question question2 = new Question(text, options, correctAnswerIndex);
 
-        assertNotEquals(question1.getId(), question2.getId()); // IDs should be unique
+        assertNotEquals(question1.get_id(), question2.get_id()); // IDs should be unique
         assertEquals(question1, question1); // Reflexive property
         assertEquals(question1.hashCode(), question1.hashCode());
     }

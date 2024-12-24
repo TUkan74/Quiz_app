@@ -1,4 +1,4 @@
-package quizzapp.util;
+package quizzapp.models;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -40,7 +40,7 @@ public class Question {
      *
      * @return the question ID
      */
-    public String getId() {
+    public String get_id() {
         return _id;
     }
 

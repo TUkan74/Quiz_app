@@ -1,4 +1,4 @@
-package quizzapp.util;
+package quizzapp.models;
 
 import java.util.Objects;
 

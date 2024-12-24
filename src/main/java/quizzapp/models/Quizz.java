@@ -1,14 +1,15 @@
-package quizzapp.util;
+package quizzapp.models;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Represents a Quiz with an ID, title, description, and a list of questions.
  */
 public class Quizz {
 
-    private int _id;
+    private String _id;
     private String _title;
     private String _description;
     private List<String> _questions;
@@ -21,7 +22,7 @@ public class Quizz {
      * @param _description a brief description of the quiz
      */
     public Quizz(int id, String _title, String _description) {
-        this._id = id;
+        this._id = UUID.randomUUID().toString();
         this._title = _title;
         this._description = _description;
         this._questions = new ArrayList<>();
@@ -32,7 +33,7 @@ public class Quizz {
      *
      * @return the quiz ID
      */
-    public int get_id() {
+    public String  get_id() {
         return _id;
     }
 

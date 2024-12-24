@@ -1,6 +1,7 @@
-package quizzapp.util;
+package quizzapp.models;
 
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
