@@ -8,23 +8,23 @@ import java.util.List;
  */
 public class Quizz {
 
-    private int id;
-    private String title;
-    private String description;
-    private List<String> questions;
+    private int _id;
+    private String _title;
+    private String _description;
+    private List<String> _questions;
 
     /**
      * Constructs a new Quizz instance.
      *
      * @param id the unique identifier of the quiz
-     * @param title the title of the quiz
-     * @param description a brief description of the quiz
+     * @param _title the title of the quiz
+     * @param _description a brief description of the quiz
      */
-    public Quizz(int id, String title, String description) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.questions = new ArrayList<>();
+    public Quizz(int id, String _title, String _description) {
+        this._id = id;
+        this._title = _title;
+        this._description = _description;
+        this._questions = new ArrayList<>();
     }
 
     /**
@@ -32,8 +32,8 @@ public class Quizz {
      *
      * @return the quiz ID
      */
-    public int getId() {
-        return id;
+    public int get_id() {
+        return _id;
     }
 
     /**
@@ -41,17 +41,17 @@ public class Quizz {
      *
      * @return the quiz title
      */
-    public String getTitle() {
-        return title;
+    public String get_title() {
+        return _title;
     }
 
     /**
      * Sets the title of the quiz.
      *
-     * @param title the new title of the quiz
+     * @param _title the new title of the quiz
      */
-    public void setTitle(String title) {
-        this.title = title;
+    public void set_title(String _title) {
+        this._title = _title;
     }
 
     /**
@@ -59,17 +59,17 @@ public class Quizz {
      *
      * @return the quiz description
      */
-    public String getDescription() {
-        return description;
+    public String get_description() {
+        return _description;
     }
 
     /**
      * Sets the description of the quiz.
      *
-     * @param description the new description of the quiz
+     * @param _description the new description of the quiz
      */
-    public void setDescription(String description) {
-        this.description = description;
+    public void set_description(String _description) {
+        this._description = _description;
     }
 
     /**
@@ -78,7 +78,7 @@ public class Quizz {
      * @param question the question to add
      */
     public void addQuestion(String question) {
-        this.questions.add(question);
+        this._questions.add(question);
     }
 
     /**
@@ -88,7 +88,7 @@ public class Quizz {
      * @return true if the question was removed, false otherwise
      */
     public boolean removeQuestion(String question) {
-        return this.questions.remove(question);
+        return this._questions.remove(question);
     }
 
     /**
@@ -96,8 +96,8 @@ public class Quizz {
      *
      * @return the list of questions
      */
-    public List<String> getQuestions() {
-        return new ArrayList<>(this.questions);
+    public List<String> get_questions() {
+        return new ArrayList<>(this._questions);
     }
 
     /**
@@ -108,10 +108,10 @@ public class Quizz {
     @Override
     public String toString() {
         return "Quizz{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", questions=" + questions +
+                "id=" + _id +
+                ", title='" + _title + '\'' +
+                ", description='" + _description + '\'' +
+                ", questions=" + _questions +
                 '}';
     }
 }
