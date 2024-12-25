@@ -51,9 +51,11 @@ public class Database {
 
     public void addQuestion(Question question) {
         List<Question> questions = loadQuestions();
-        boolean exists = questions.stream().anyMatch(existingQuestion -> existingQuestion.get_text().equals(question.get_text()));
+        boolean exists = questions.stream().anyMatch(existingQuestion ->
+                existingQuestion.get_id().equals(question.get_id()) ||
+                        (existingQuestion.get_text().equals(question.get_text()) && existingQuestion.get_options().equals(question.get_options())));
         if (exists) {
-            System.out.println("Question with text \"" + question.get_text() + "\" already exists.");
+            System.out.println("Question with ID \"" + question.get_id() + "\" or equivalent text/options already exists.");
             return;
         }
         questions.add(question);
@@ -72,7 +74,8 @@ public class Database {
     public List<Quiz> loadQuizzes() {
         try (FileReader reader = new FileReader(QUIZZES_FILE)) {
             Type quizListType = new TypeToken<List<Quiz>>() {}.getType();
-            return gson.fromJson(reader, quizListType);
+            List<Quiz> quizzes = gson.fromJson(reader, quizListType);
+            return quizzes != null ? quizzes : new ArrayList<>();
         } catch (IOException e) {
             return new ArrayList<>();
         }
@@ -86,9 +89,22 @@ public class Database {
         }
     }
 
-    public void addQuizz(Quiz Quiz) {
+    public void addQuiz(Quiz quiz) {
         List<Quiz> quizzes = loadQuizzes();
-        quizzes.add(Quiz);
+        boolean exists = quizzes.stream().anyMatch(existingQuiz ->
+                existingQuiz.get_id().equals(quiz.get_id()) ||
+                        (existingQuiz.get_title().equals(quiz.get_title()) && existingQuiz.get_description().equals(quiz.get_description())));
+        if (exists) {
+            System.out.println("Quiz with ID \"" + quiz.get_id() + "\" or equivalent title/description already exists.");
+            return;
+        }
+        quizzes.add(quiz);
+        saveQuizzes(quizzes);
+    }
+
+    public void deleteQuiz(String quizId) {
+        List<Quiz> quizzes = loadQuizzes();
+        quizzes.removeIf(quiz -> quiz.get_id().equals(quizId));
         saveQuizzes(quizzes);
     }
 
