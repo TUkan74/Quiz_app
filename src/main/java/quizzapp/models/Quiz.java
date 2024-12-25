@@ -9,7 +9,7 @@ import java.util.UUID;
 /**
  * Represents a Quiz with an ID, title, description, and a list of questions.
  */
-public class Quizz {
+public class Quiz {
 
     private String _id;
     private String _title;
@@ -22,7 +22,7 @@ public class Quizz {
      * @param _title the title of the quiz
      * @param _description a brief description of the quiz
      */
-    public Quizz(String _title, String _description) {
+    public Quiz(String _title, String _description) {
         this._id = UUID.randomUUID().toString();
         this._title = _title;
         this._description = _description;
