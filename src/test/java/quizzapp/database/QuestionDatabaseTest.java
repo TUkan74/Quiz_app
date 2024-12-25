@@ -21,6 +21,8 @@ public class QuestionDatabaseTest {
     @AfterAll
     public static void clearAllTestQuestions() {
         System.out.println("Cleaning up test questions...");
+        System.out.println("Questions before cleanup: " + database.loadQuestions());
+        System.out.println("Questions to be removed: " + new_question_ids);
         List<Question> questions = database.loadQuestions();
         questions.removeIf(question -> new_question_ids.contains(question.get_id()));
         database.saveQuestions(questions);

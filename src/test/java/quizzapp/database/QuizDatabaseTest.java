@@ -3,6 +3,7 @@ package quizzapp.database;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import quizzapp.database.Database;
+import quizzapp.models.Question;
 import quizzapp.models.Quiz;
 
 import java.util.ArrayList;
@@ -17,6 +18,17 @@ public class QuizDatabaseTest {
 
     private static final Database database = new Database();
     private static final List<String> new_quiz_ids = new ArrayList<>();
+    private static final List<String> new_question_ids = new ArrayList<>();
+
+    private static void deleteTestQuestions(){
+        System.out.println("Cleaning up test questions...");
+        System.out.println("Questions before cleanup: " + database.loadQuestions());
+        System.out.println("Questions to be removed: " + new_question_ids);
+        List<Question> questions = database.loadQuestions();
+        questions.removeIf(question -> new_question_ids.contains(question.get_id()));
+        database.saveQuestions(questions);
+        System.out.println("Test resources cleared: " + new_question_ids);
+    }
 
     @AfterAll
     public static void clearAllTestQuizzes() {
@@ -24,6 +36,7 @@ public class QuizDatabaseTest {
         List<Quiz> quizzes = database.loadQuizzes();
         quizzes.removeIf(quiz -> new_quiz_ids.contains(quiz.get_id()));
         database.saveQuizzes(quizzes);
+        deleteTestQuestions();
         System.out.println("Test resources cleared: " + new_quiz_ids);
     }
 
@@ -87,5 +100,56 @@ public class QuizDatabaseTest {
         assertNotNull(updatedQuiz, "Quiz not found after update!");
         assertEquals("An updated description for C++ basics", updatedQuiz.get_description(), "Quiz description not updated correctly!");
         System.out.println("Quiz updated successfully: " + updatedQuiz);
+    }
+
+    @Test
+    public void testAddQuestionToQuiz() {
+        System.out.println("Running testAddQuestionToQuiz...");
+        Quiz quiz = new Quiz("test_quiz", "A test quiz");
+        database.addQuiz(quiz);
+        new_quiz_ids.add(quiz.get_id());
+
+        Question question = new Question("What is 2 + 2?", new String[]{"3", "4", "5"}, 1);
+        database.addQuestion(question);
+        new_question_ids.add(question.get_id());
+
+        database.addQuestionToQuiz(quiz.get_id(), question);
+
+        List<Quiz> quizzes = database.loadQuizzes();
+        Quiz updatedQuiz = quizzes.stream().filter(q -> q.get_id().equals(quiz.get_id())).findFirst().orElse(null);
+
+        assertNotNull(updatedQuiz, "Quiz not found!");
+        assertTrue(updatedQuiz.get_questions().contains(question.get_id()), "Question not added to quiz!");
+        System.out.println("Question added to quiz successfully.");
+    }
+
+    @Test
+    public void testDeleteQuestionFromQuiz() {
+        System.out.println("Running testDeleteQuestionFromQuiz...");
+        Quiz quiz = new Quiz("test_quiz_delete", "A quiz for testing question deletion");
+        database.addQuiz(quiz);
+        new_quiz_ids.add(quiz.get_id());
+
+        Question question = new Question("What is the capital of France?", new String[]{"Berlin", "Madrid", "Paris", "Rome"}, 2);
+        database.addQuestion(question);
+        new_question_ids.add(question.get_id());
+
+        database.addQuestionToQuiz(quiz.get_id(), question);
+
+        // Verify question is in the quiz
+        List<Quiz> quizzes = database.loadQuizzes();
+        Quiz updatedQuiz = quizzes.stream().filter(q -> q.get_id().equals(quiz.get_id())).findFirst().orElse(null);
+        assertNotNull(updatedQuiz, "Quiz not found!");
+        assertTrue(updatedQuiz.get_questions().contains(question.get_id()), "Question not added to quiz!");
+
+        // Delete question from quiz
+        database.deleteQuestionFromQuiz(quiz.get_id(), question.get_id());
+
+        // Verify question is removed
+        quizzes = database.loadQuizzes();
+        updatedQuiz = quizzes.stream().filter(q -> q.get_id().equals(quiz.get_id())).findFirst().orElse(null);
+        assertNotNull(updatedQuiz, "Quiz not found after deletion!");
+        assertFalse(updatedQuiz.get_questions().contains(question.get_id()), "Question not removed from quiz!");
+        System.out.println("Question removed from quiz successfully.");
     }
 }

@@ -68,6 +68,42 @@ public class Database {
         saveQuestions(questions);
     }
 
+    public void addQuestionToQuiz(String quizId, Question question) {
+        List<Quiz> quizzes = loadQuizzes();
+        Quiz quiz = quizzes.stream().filter(q -> q.get_id().equals(quizId)).findFirst().orElse(null);
+        if (quiz == null) {
+            System.out.println("Quiz with ID \"" + quizId + "\" not found.");
+            return;
+        }
+
+        if (quiz.get_questions().contains(question.get_id())) {
+            System.out.println("Question with ID \"" + question.get_id() + "\" already exists in the quiz.");
+            return;
+        }
+
+        quiz.get_questions().add(question.get_id());
+        saveQuizzes(quizzes);
+        System.out.println("Question added to quiz successfully.");
+    }
+
+    public void deleteQuestionFromQuiz(String quizId, String questionId) {
+        List<Quiz> quizzes = loadQuizzes();
+        Quiz quiz = quizzes.stream().filter(q -> q.get_id().equals(quizId)).findFirst().orElse(null);
+        if (quiz == null) {
+            System.out.println("Quiz with ID \"" + quizId + "\" not found.");
+            return;
+        }
+
+        if (!quiz.get_questions().contains(questionId)) {
+            System.out.println("Question with ID \"" + questionId + "\" not found in the quiz.");
+            return;
+        }
+
+        quiz.get_questions().remove(questionId);
+        saveQuizzes(quizzes);
+        System.out.println("Question removed from quiz successfully.");
+    }
+
 
     // Quiz Operations
 
@@ -130,6 +166,8 @@ public class Database {
             return new ArrayList<>();
         }
     }
+
+
 
 
     public void saveUsers(List<User> users) {
